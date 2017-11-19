@@ -76,7 +76,7 @@ end
 
 ### Examples
   
-See [Here](./tree/master/examples)
+See [Here](./examples)
 
 ## Default Types
 
