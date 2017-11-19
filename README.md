@@ -74,6 +74,10 @@ end
 # {:name=>"<Your book>", :price=>1.2, :tags=>["Hehe", "Haha", "666"]}
 ```
 
+### Examples
+  
+See [Here](./tree/master/examples)
+
 ## Default Types
 
 * `int` # convert string to int
@@ -81,6 +85,7 @@ end
 * `string`: # to_s
 * `time` # Time.parse(string)
 * `Proc` # format the value with your proc
+
 
 ## Development
 
