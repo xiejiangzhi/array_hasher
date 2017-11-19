@@ -3,7 +3,7 @@ require "array_hasher/version"
 require "array_hasher/formatter"
 
 require 'csv'
-require 'JSON'
+require 'json'
 
 module ArrayHasher
   class << self
