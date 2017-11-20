@@ -14,10 +14,10 @@ RSpec.describe ArrayHasher::Formatter do
   describe '#parse' do
     it 'should convert array to hash' do
       expect(subject.parse([
-        "hello", "12", "$12.45", "2017-10-25 13:22:14", '33', 'a', 'b'
+        "hello", "12,400", "$12.45", "2017-10-25 13:22:14", '33', 'a', 'b'
       ])).to eql(
         name: 'hello',
-        quantity: 12,
+        quantity: 12400,
         price: 12.45,
         time: Time.parse("2017-10-25 13:22:14"),
         number: 99,
