@@ -7,10 +7,10 @@ module ArrayHasher
     REGEXP_EMPTY = /\A\s*\z/
 
     TYPES = {
-      int: Proc.new {|v| v =~ REGEXP_EMPTY ? nil : v.gsub(/\A[^\d]+/, '').to_i },
-      float: Proc.new {|v| v =~ REGEXP_EMPTY ? nil :  v.gsub(/\A[^\d]+/, '').to_f },
+      int: Proc.new {|v| (v.nil? || v =~ REGEXP_EMPTY) ? nil : v.gsub(/\A[^\d]+/, '').to_i },
+      float: Proc.new {|v| (v.nil? || v =~ REGEXP_EMPTY) ? nil :  v.gsub(/\A[^\d]+/, '').to_f },
       string: Proc.new {|v| v.to_s },
-      time: Proc.new {|v| Time.parse(v) }
+      time: Proc.new {|v| v ? Time.parse(v) : nil }
     }
 
     # cols:

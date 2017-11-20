@@ -53,6 +53,14 @@ RSpec.describe ArrayHasher::Formatter do
         c: ['122', '133']
       )
     end
+
+    it 'should convert nil array' do
+      expect(subject.parse([
+        nil, nil, nil, nil, nil, nil
+      ])).to eql(
+        name: '', quantity: nil, price: nil, time: nil, number: 0, unknown: nil
+      )
+    end
   end
 
   describe '#define_type' do
