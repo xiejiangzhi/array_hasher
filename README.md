@@ -1,4 +1,4 @@
-# ArrayHasher
+ArrayHasher
 
 [![Gem Version](https://badge.fury.io/rb/array_hasher.svg)](https://badge.fury.io/rb/array_hasher)
 
@@ -27,27 +27,30 @@ Or install it yourself as:
 
 ### Format array
 
+New a formatter
+
 ```
 require 'array_hasher'
 
 f = ArrayHasher.new_formatter([
   [:a, :int], [:b, :float], [:c, proc {|v| v.split(',') }], [:d, nil, range: 3..-1]
 ])
+```
+
+Parse array
+
+```
 f.parse(['number: 123', '$ 123.1', 'a,b,c', 'd1', 'd2', 'd3'])
 # => {a: 123, b: 123.1, c: ['a', 'b', 'c'], d: ['d1', 'd2', 'd3']}
+```
 
+Define your data type
+
+```
 f.define_type(:my_arr) {|v| v.split(',').map(&:to_i) }
 f.cols[2] = [:c, :my_arr]
 f.parse(['number: 123', '$ 123.1', '1,2,3', 'd1', 'd2', 'd3'])
 # => {a: 123, b: 123.1, c: [1, 2, 3], d: ['d1', 'd2', 'd3']}
-```
-
-### Parse format from a array of string
-
-```
-format = ArrayHasher.parse_formatter(['name:string', 'price:float', 'attrs:arr:{range: 2..-1}'])
-# => [[:name, :string], [:price, :float], [:attrs, :arr, range: 2..-1]]
-ArrayHasher.new_formatter(format)
 ```
 
 ### Format CSV
@@ -62,7 +65,11 @@ My book,USD 4.3,C,123,
 Your book,1.2,Hehe,Haha,666
 ```
 
+Define our data type and parser 
+
 ```
+# `bookname` type was used in that CSV file
+# We can define this type, it will tell parser how to parse data of bookname
 ext_types = {bookname: proc {|v| "<#{v}>" }}
 ArrayHasher.csv_each('path/to/test.csv', ext_types) do |line|
   puts line
@@ -74,6 +81,22 @@ end
 # {:name=>"<Your book>", :price=>1.2, :tags=>["Hehe", "Haha", "666"]}
 ```
 
+### Put multiple columns to one key.
+
+```
+# We can append a `range` option as third arguments
+# `range` also can be used in CSV title
+format = ArrayHasher.parse_formatter([
+  'name:string',
+  'price:float',
+  'attrs:arr:{range: 2..-1}'
+])
+# => [[:name, :string], [:price, :float], [:attrs, :arr, range: 2..-1]]
+
+ArrayHasher.new_formatter(format)
+```
+
+
 ### Examples
   
 See [Here](./examples)
@@ -84,7 +107,7 @@ See [Here](./examples)
 * `float` # convert string to float
 * `string`: # to_s
 * `time` # Time.parse(string)
-* `Proc` # format the value with your proc
+* `Proc` # format the value with your proc. we can define a Proc in our code only.
 
 
 ## Development
