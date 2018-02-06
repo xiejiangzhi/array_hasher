@@ -37,5 +37,28 @@ RSpec.describe ArrayHasher do
         {name: "<Your book>", price: 1.2, tags: ["Hehe", "Haha", "666"]}
       ])
     end
+
+    it 'should return a enumerator if do not give a block' do
+      ext_types = {bookname: proc {|v| "<#{v}>" }}
+      enum = ArrayHasher.csv_each('spec/test_files/a.csv', ext_types)
+      expect(enum).to be_a(Enumerator)
+      expect(enum.to_a).to eql([
+        {name: "<Hello>", price: 1.2, tags: ["A", "B", "C"]},
+        {name: "<World>", price: 3.2, tags: ["B", "C", "What’s this?"]},
+        {name: "<My book>", price: 4.3, tags: ["C", "123", nil]},
+        {name: "<Your book>", price: 1.2, tags: ["Hehe", "Haha", "666"]}
+      ])
+    end
+
+    it 'should lazy loop csv if has no block' do
+      formatter = double('formatter', types: {}, parse: {foo: :bar})
+      allow(ArrayHasher).to receive(:new_formatter).and_return(formatter)
+      expect(formatter).to receive(:parse).once
+
+      ext_types = {bookname: proc {|v| "<#{v}>" }}
+      enum = ArrayHasher.csv_each('spec/test_files/a.csv', ext_types)
+      expect(enum).to be_a(Enumerator)
+      expect(enum.next).to eql({foo: :bar})
+    end
   end
 end

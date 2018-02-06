@@ -33,11 +33,15 @@ New a formatter
 require 'array_hasher'
 
 f = ArrayHasher.new_formatter([
-  [:a, :int], [:b, :float], [:c, proc {|v| v.split(',') }], [:d, nil, range: 3..-1]
+  # [hash_key, data_type]
+  [:a, :int],
+  [:b, :float],
+  [:c, proc {|v| v.split(',') }],
+  [:d, nil, range: 3..-1]
 ])
 ```
 
-Parse array
+Array to hash by formatter
 
 ```
 f.parse(['number: 123', '$ 123.1', 'a,b,c', 'd1', 'd2', 'd3'])
@@ -55,7 +59,17 @@ f.parse(['number: 123', '$ 123.1', '1,2,3', 'd1', 'd2', 'd3'])
 
 ### Format CSV
 
-CSV file
+For a CSV file, add a defination to csv first line, `hash_key:data_type:options`
+If a column's `hash_key` is empty, we will ignore this column
+If a column's `data_type` is empty, :string will be use.
+`options` is a JSON of hash, it is optional.
+
+For examples
+
+* `name`: equal to `name:string`
+* ` `, `:`, `:string`: this column will be ignore
+* `tags::{"range": [2,3]}`: we'll put `line[2...(2+3)]` to the `tags` key
+* `name:undefined_type`: if you give a undefined type, and you didn't define it in your code, its type is `string`
 
 ```
 name:bookname,price:float,"tags::{""range"": [2, 3]}",,
@@ -79,6 +93,8 @@ end
 # {:name=>"<World>", :price=>3.2, :tags=>["B", "C", "What’s this?"]}
 # {:name=>"<My book>", :price=>4.3, :tags=>["C", "123", nil]}
 # {:name=>"<Your book>", :price=>1.2, :tags=>["Hehe", "Haha", "666"]}
+
+ArrayHasher.csv_each('path/to/test.csv', ext_types) # <Enumerator: xxx>
 ```
 
 ### Put multiple columns to one key.
@@ -89,7 +105,7 @@ end
 format = ArrayHasher.parse_formatter([
   'name:string',
   'price:float',
-  'attrs:arr:{range: 2..-1}'
+  'attrs:arr:{"range": [2, 100]}'
 ])
 # => [[:name, :string], [:price, :float], [:attrs, :arr, range: 2..-1]]
 

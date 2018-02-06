@@ -27,7 +27,11 @@ module ArrayHasher
       csv = CSV.open(path)
       formatter = new_formatter(parse_format(csv.gets))
       formatter.types.merge!(ext_types)
-      csv.each { |line| block.call(formatter.parse(line)) }
+      if block
+        csv.each { |line| block.call(formatter.parse(line)) }
+      else
+        Enumerator.new { |y| csv.each { |line| y << formatter.parse(line) } }
+      end
     end
   end
 end
