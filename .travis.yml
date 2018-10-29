@@ -13,4 +13,6 @@ rvm:
 before_install:
   - gem install bundler --no-doc
 
-script: bundle exec rspec
+script:
+  - bundle exec rspec
+  - bundle exec rubocop
