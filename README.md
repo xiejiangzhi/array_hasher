@@ -1,7 +1,6 @@
 ArrayHasher
 
 [![Gem Version](https://badge.fury.io/rb/array_hasher.svg)](https://badge.fury.io/rb/array_hasher)
-
 [![Build Status](https://travis-ci.org/xiejiangzhi/array_hasher.svg?branch=master)](https://travis-ci.org/xiejiangzhi/array_hasher)
 
 Format Array data to a hash with your definition. it also can parse the CSV file with definition of title.
