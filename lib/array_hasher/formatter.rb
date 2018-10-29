@@ -10,7 +10,9 @@ module ArrayHasher
       int: Proc.new {|v| (v.nil? || v =~ REGEXP_EMPTY) ? nil : v.gsub(/[^\d]+/, '').to_i },
       float: Proc.new {|v| (v.nil? || v =~ REGEXP_EMPTY) ? nil :  v.gsub(/[^\d\.]+/, '').to_f },
       string: Proc.new {|v| v.to_s },
-      time: Proc.new {|v| v ? Time.parse(v) : nil }
+      time: Proc.new {|v| v ? Time.parse(v) : nil },
+      json: Proc.new { |v| v ? JSON.parse(v) : nil },
+      date: Proc.new { |v| v ? Date.parse(v) : nil }
     }
 
     # cols:

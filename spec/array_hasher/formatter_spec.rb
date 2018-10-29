@@ -7,32 +7,38 @@ RSpec.describe ArrayHasher::Formatter do
       [:price, :float],
       [:time, :time],
       [:number, proc {|v| v.to_i * 3 }],
-      [:unknown, :asdf]
+      [:unknown, :asdf],
+      [:ext_data, :json],
+      [:bd, :date]
     ])
   end
 
   describe '#parse' do
     it 'should convert array to hash' do
       expect(subject.parse([
-        "hello", "12,400", "$12.45", "2017-10-25 13:22:14", '33', 'a', 'b'
+        "hello", "12,400", "$12.45", "2017-10-25 13:22:14", '33', 'a', '{"str": [1, 2]}', '2018-1-1', 'b'
       ])).to eql(
         name: 'hello',
         quantity: 12400,
         price: 12.45,
         time: Time.parse("2017-10-25 13:22:14"),
         number: 99,
-        unknown: 'a'
+        unknown: 'a',
+        ext_data: {'str' => [1, 2]},
+        bd: Date.parse('2018-1-1')
       )
 
       expect(subject.parse([
-        "world123", "abc13", "$ 12", "2017-10-25", '1', 123
+        "world123", "abc13", "$ 12", "2017-10-25", '1', 123, '["str", 1, 2]', '2018-1-1 11:22'
       ])).to eql(
         name: 'world123',
         quantity: 13,
         price: 12.0,
         time: Time.parse("2017-10-25"),
         number: 3,
-        unknown: 123
+        unknown: 123,
+        ext_data: ['str', 1, 2],
+        bd: Date.parse('2018-1-1')
       )
     end
 
@@ -56,9 +62,10 @@ RSpec.describe ArrayHasher::Formatter do
 
     it 'should convert nil array' do
       expect(subject.parse([
-        nil, nil, nil, nil, nil, nil
+        nil, nil, nil, nil, nil, nil, nil, nil
       ])).to eql(
-        name: '', quantity: nil, price: nil, time: nil, number: 0, unknown: nil
+        name: '', quantity: nil, price: nil, time: nil, number: 0,
+        ext_data: nil, bd: nil, unknown: nil
       )
     end
   end

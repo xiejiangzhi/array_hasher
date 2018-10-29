@@ -114,7 +114,7 @@ ArrayHasher.new_formatter(format)
 
 
 ### Examples
-  
+
 See [Here](./examples)
 
 ## Default Types
@@ -123,6 +123,8 @@ See [Here](./examples)
 * `float` # convert string to float
 * `string`: # to_s
 * `time` # Time.parse(string)
+* `date` # Date.parse(string)
+* `json` # JSON.parse(string)
 * `Proc` # format the value with your proc. we can define a Proc in our code only.
 
 
