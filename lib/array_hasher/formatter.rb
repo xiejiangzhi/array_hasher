@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'time'
 
 module ArrayHasher
@@ -7,10 +9,10 @@ module ArrayHasher
     REGEXP_EMPTY = /\A\s*\z/
 
     TYPES = {
-      int: Proc.new {|v| (v.nil? || v =~ REGEXP_EMPTY) ? nil : v.gsub(/[^\d]+/, '').to_i },
-      float: Proc.new {|v| (v.nil? || v =~ REGEXP_EMPTY) ? nil :  v.gsub(/[^\d\.]+/, '').to_f },
-      string: Proc.new {|v| v.to_s },
-      time: Proc.new {|v| v ? Time.parse(v) : nil },
+      int: Proc.new { |v| (v.nil? || v =~ REGEXP_EMPTY) ? nil : v.gsub(/[^\d]+/, '').to_i },
+      float: Proc.new { |v| (v.nil? || v =~ REGEXP_EMPTY) ? nil : v.gsub(/[^\d\.]+/, '').to_f },
+      string: Proc.new { |v| v.to_s },
+      time: Proc.new { |v| v ? Time.parse(v) : nil },
       json: Proc.new { |v| v ? JSON.parse(v) : nil },
       date: Proc.new { |v| v ? Date.parse(v) : nil }
     }
@@ -31,7 +33,7 @@ module ArrayHasher
         [
           name ? name.to_sym : nil,
           (type.nil? || type.is_a?(Proc)) ? type : type.to_sym,
-          (opts || {}).each_with_object({}) {|kv, r| r[kv[0].to_sym] = kv[1] }
+          (opts || {}).each_with_object({}) { |kv, r| r[kv[0].to_sym] = kv[1] }
         ]
       end
     end
@@ -61,4 +63,3 @@ module ArrayHasher
     end
   end
 end
-

@@ -6,7 +6,7 @@ RSpec.describe ArrayHasher::Formatter do
       [:quantity, :int],
       [:price, :float],
       [:time, :time],
-      [:number, proc {|v| v.to_i * 3 }],
+      [:number, proc { |v| v.to_i * 3 }],
       [:unknown, :asdf],
       [:ext_data, :json],
       [:bd, :date]
@@ -24,7 +24,7 @@ RSpec.describe ArrayHasher::Formatter do
         time: Time.parse("2017-10-25 13:22:14"),
         number: 99,
         unknown: 'a',
-        ext_data: {'str' => [1, 2]},
+        ext_data: { 'str' => [1, 2] },
         bd: Date.parse('2018-1-1')
       )
 
@@ -49,7 +49,7 @@ RSpec.describe ArrayHasher::Formatter do
 
     it 'should use specified range as val' do
       f = ArrayHasher::Formatter.new([
-        [:a, proc {|v| v[-1] }, range: 0..2],
+        [:a, proc { |v| v[-1] }, range: 0..2],
         [:b, :string, range: [1, 2]],
         [:c, nil, range: 1..2]
       ])
@@ -76,7 +76,7 @@ RSpec.describe ArrayHasher::Formatter do
 
     it 'should support define a new type' do
       expect(f.parse(data)).to eql(a: 0, b: Time.parse('2017-1-1'), c: 'c')
-      f.define_type(:my_type) {|v| "-#{v}-" }
+      f.define_type(:my_type) { |v| "-#{v}-" }
       expect(f.parse(data)).to eql(a: 0, b: Time.parse('2017-1-1'), c: '-c-')
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe ArrayHasher::Formatter do
     let(:data) { ['a', '2017-1-1', 'c', 'd'] }
 
     before :each do
-      f.define_type(:my_type) {|v| "-#{v}-" }
+      f.define_type(:my_type) { |v| "-#{v}-" }
     end
 
     it 'can read the definition of columns' do

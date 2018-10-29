@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "array_hasher/version"
 
 require "array_hasher/formatter"
